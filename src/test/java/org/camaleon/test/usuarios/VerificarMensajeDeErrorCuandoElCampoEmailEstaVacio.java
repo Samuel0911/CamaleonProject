@@ -1,59 +1,56 @@
 package org.camaleon.test.usuarios;
 
 import org.camaleon.framework.pages.admin.login.LoginPage;
-import org.camaleon.framework.pages.admin.view.DashboardPage;
+import org.camaleon.framework.pages.admin.view.CreateUserPage;
 import org.camaleon.framework.utilities.common.LogManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
-import org.testng.ISuite;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class VerificarQueUnNuevoUsuarioEsCreado {
-	protected static WebDriver driver = null;
+public class VerificarMensajeDeErrorCuandoElCampoEmailEstaVacio {
+	
+protected static WebDriver driver = null;
+	
 	@BeforeTest
 	public void onStart() {
 		driver = new FirefoxDriver();
-		// driver = new ChromeDriver();
 		driver.manage().window().maximize();;
 		LogManager.info("Browser <FIREFOX> was opened");
     }
 
 	@AfterTest
-    public void generateReport() {           
+    public void afterTest() {           
     	driver.close();
     	LogManager.info("Browser <FIREFOX> was closed");
     }
 
-	public void onFinish(ISuite suite) {
-
-	}
-	
 	@Test
-	public void VerifyUserIsCreated(){
+	public void VerifyErrorMessageLoginFieldtextIsEmpty(){
 		  
-		  String dashboardLabelEsperado = "Dashboard";  
-		  
+		String mensajeErrorEsperado = "This field is required.";		  
+		  		  
 		  LoginPage login = new LoginPage(driver);
+		  
 		  
 		  login.setUserName("admin")
 		  .setPassword("admin")
-		  .clickSignInButton()
+		  .clickSignInButton()		  
 		  .LeftMenu()
 		  .clickUsersMenu()
-		  .clickAddUserMenu()
+		  .clickAddUserMenu()		  
 		  .setFirstName("Samuel")
-		  .setLastName("Vargas")
-		  .setLogin("test01")
-		  .setEmail("test@test.com")
+		  .setLastName("Vargas")		  
+		  .setLogin("Admin")
+		  .setEmail("")
 		  .setPassword("test")
-		  .clickCreateButton();
+		  .clickCreateButtonWithEmptyData();
 		  
-		  DashboardPage dp = new DashboardPage(driver);
-		  Assert.assertEquals(dp.getDashboardLabel(),dashboardLabelEsperado,
-				  "Dashboard label invalido");
-
+		  // Verifying Error message is present
+		  CreateUserPage cp = new CreateUserPage(driver);
+		  //Assert.assertTrue(cp.isEmptyMessagePresent());
+		  Assert.assertTrue(cp.VerifyErrorEmailMessageIsPresent(mensajeErrorEsperado));
 	}
 }

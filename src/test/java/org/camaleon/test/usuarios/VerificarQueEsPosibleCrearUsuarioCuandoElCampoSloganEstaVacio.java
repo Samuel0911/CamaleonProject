@@ -1,17 +1,18 @@
 package org.camaleon.test.usuarios;
 
 import org.camaleon.framework.pages.admin.login.LoginPage;
+import org.camaleon.framework.pages.admin.view.CreateUserPage;
 import org.camaleon.framework.pages.admin.view.DashboardPage;
 import org.camaleon.framework.utilities.common.LogManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
-import org.testng.ISuite;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class VerificarQueUnNuevoUsuarioEsCreado {
+public class VerificarQueEsPosibleCrearUsuarioCuandoElCampoSloganEstaVacio {
+	
 	protected static WebDriver driver = null;
 	@BeforeTest
 	public void onStart() {
@@ -19,17 +20,13 @@ public class VerificarQueUnNuevoUsuarioEsCreado {
 		// driver = new ChromeDriver();
 		driver.manage().window().maximize();;
 		LogManager.info("Browser <FIREFOX> was opened");
+	    }
+ 
+		@AfterTest
+	    public void generateReport() {           
+	    	driver.close();
+	    	LogManager.info("Browser <FIREFOX> was closed");
     }
-
-	@AfterTest
-    public void generateReport() {           
-    	driver.close();
-    	LogManager.info("Browser <FIREFOX> was closed");
-    }
-
-	public void onFinish(ISuite suite) {
-
-	}
 	
 	@Test
 	public void VerifyUserIsCreated(){
@@ -44,14 +41,15 @@ public class VerificarQueUnNuevoUsuarioEsCreado {
 		  .LeftMenu()
 		  .clickUsersMenu()
 		  .clickAddUserMenu()
-		  .setFirstName("Samuel")
+		  .setFirstName("Julian")
 		  .setLastName("Vargas")
 		  .setLogin("test01")
-		  .setEmail("test@test.com")
+		  .setEmail("test@gmail.com")
 		  .setPassword("test")
 		  .clickCreateButton();
 		  
 		  DashboardPage dp = new DashboardPage(driver);
+				  
 		  Assert.assertEquals(dp.getDashboardLabel(),dashboardLabelEsperado,
 				  "Dashboard label invalido");
 
